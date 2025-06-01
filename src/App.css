@@ -114,3 +114,21 @@ button.no {
     opacity: 1;
   }
 }
+
+.continue-button {
+  background: linear-gradient(to right, #ec4899, #ef4444); /* pink to red */
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 9999px; /* full rounded */
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.continue-button:hover {
+  background: linear-gradient(to right, #db2777, #dc2626); /* deeper pink-red */
+  transform: scale(1.05);
+}

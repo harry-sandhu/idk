@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // 👈 import
 import Confetti from "react-confetti";
 import "./App.css";
 
@@ -17,9 +18,12 @@ const randomRange = (min, max) => Math.random() * (max - min) + min;
 
 function App() {
   const [accepted, setAccepted] = useState(false);
+  const [showContinue, setShowContinue] = useState(false); // NEW: track when to show Continue button
   const [messageIndex, setMessageIndex] = useState(-1);
   const [noDisabled, setNoDisabled] = useState(false);
   const [hearts, setHearts] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const initialHearts = Array.from({ length: HEART_COUNT }).map(() => ({
@@ -88,7 +92,7 @@ function App() {
 
     animationId = requestAnimationFrame(animateHearts);
     return () => cancelAnimationFrame(animationId);
-  }, []); // <-- Removed dependency on 'accepted' to keep animating
+  }, []);
 
   const handleNoClick = () => {
     if (messageIndex < messages.length - 1) {
@@ -97,6 +101,16 @@ function App() {
       setMessageIndex(messages.length);
       setNoDisabled(true);
     }
+  };
+
+  // UPDATED: now show message + Continue button instead of direct navigate
+  const handleYesClick = () => {
+    setAccepted(true);
+    setShowContinue(true);
+  };
+
+  const handleContinueClick = () => {
+    navigate("/love");
   };
 
   return (
@@ -127,12 +141,19 @@ function App() {
 
       <div className="centered-wrapper">
         {accepted ? (
-          <h1 className="love-message">Yay! I love you, putt! 💖💍</h1>
+          <>
+            <h1 className="love-message">Yay! I love you, putt! 💖💍</h1>
+            {showContinue && (
+              <button className="continue-button" onClick={handleContinueClick}>
+                Continue
+              </button>
+            )}
+          </>
         ) : (
           <>
             <h1>Will you be mine forever? 💖</h1>
             <div className="buttons">
-              <button className="yes" onClick={() => setAccepted(true)}>
+              <button className="yes" onClick={handleYesClick}>
                 Yes 💍
               </button>
               <button
